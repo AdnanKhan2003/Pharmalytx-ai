@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+  metadataBase: new URL("https://pharmalytx-ai-git-main-adnankhan2003s-projects.vercel.app"),
   title: "Pharmalytix AI",
   description: "Advanced Pharmacy Management System - Secure, Efficient, Intelligent Pharmacy Management with AI-powered forecasting, inventory management, and role-based access control.",
   icons: {
@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Pharmalytix AI",
     description: "Advanced Pharmacy Management System - Secure, Efficient, Intelligent Pharmacy Management",
+    siteName: "Pharmalytix AI",
+    url: "https://pharmalytx-ai-git-main-adnankhan2003s-projects.vercel.app",
     images: [
       {
         url: "/og-image.png",
