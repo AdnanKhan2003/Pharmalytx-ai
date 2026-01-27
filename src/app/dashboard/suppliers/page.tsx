@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { Search, Filter, Building2, Phone, Mail } from "lucide-react"
 import Link from "next/link"
 import SupplierActions from "@/components/suppliers/supplier-actions"
+import { ExportButton } from "@/components/ui/export-button"
 
 export default async function SuppliersPage() {
     const suppliers = await prisma.supplier.findMany({
@@ -12,6 +13,14 @@ export default async function SuppliersPage() {
             }
         }
     })
+
+    const exportData = suppliers.map(s => ({
+        name: s.name,
+        contact: s.contact || 'N/A',
+        email: s.email || 'N/A',
+        address: s.address || 'N/A',
+        products: s._count.products
+    }));
 
     return (
         <div className="space-y-6">
@@ -25,6 +34,17 @@ export default async function SuppliersPage() {
                     />
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">
+                    <ExportButton
+                        data={exportData}
+                        columns={[
+                            { header: 'Supplier Name', key: 'name' },
+                            { header: 'Contact Person', key: 'contact' },
+                            { header: 'Email', key: 'email' },
+                            { header: 'Address', key: 'address' },
+                            { header: 'Product Count', key: 'products' }
+                        ]}
+                        filename="suppliers_list"
+                    />
                     <Link href="/dashboard/suppliers/add" className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition-all">
                         <Building2 className="h-4 w-4" />
                         Add Supplier

@@ -1,11 +1,39 @@
 import { getDemandForecast } from "@/app/actions/ai"
 import { Sparkles, TrendingUp, AlertCircle, CheckCircle2 } from "lucide-react"
+import { ExportButton } from "@/components/ui/export-button"
 
 export default async function AiForecastingPage() {
     const forecasts = await getDemandForecast()
 
+    const exportData = forecasts.map((f: any) => ({
+        name: f.name,
+        category: f.category,
+        currentStock: f.currentStock,
+        predictedDemand: f.predictedDemand,
+        dailyRate: f.dailyRate,
+        suggestion: f.suggestion,
+        status: f.status
+    }));
+
     return (
         <div className="space-y-6">
+            <div className="flex justify-end">
+                <ExportButton
+                    data={exportData}
+                    columns={[
+                        { header: 'Product Name', key: 'name' },
+                        { header: 'Category', key: 'category' },
+                        { header: 'Current Stock', key: 'currentStock' },
+                        { header: 'Predicted Demand', key: 'predictedDemand' },
+                        { header: 'Daily Rate', key: 'dailyRate' },
+                        { header: 'Suggested Reorder', key: 'suggestion' },
+                        { header: 'Status', key: 'status' }
+                    ]}
+                    filename="ai_forecast_report"
+                    className="mb-4"
+                />
+            </div>
+
             <div className="bg-linear-to-r from-blue-600 to-cyan-600 rounded-2xl p-8 text-white shadow-lg overflow-hidden relative">
                 <div className="relative z-10">
                     <h2 className="text-2xl font-bold flex items-center gap-2 mb-2">

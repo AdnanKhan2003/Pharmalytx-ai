@@ -16,7 +16,17 @@ export async function getDashboardMetrics() {
     const sales = await prisma.sale.findMany({
         orderBy: { createdAt: 'desc' },
         take: 100, // For chart
-        include: { items: true }
+        include: {
+            items: {
+                include: {
+                    batch: {
+                        include: {
+                            product: { select: { name: true } }
+                        }
+                    }
+                }
+            }
+        }
     })
 
     // Calculate Metrics
@@ -44,7 +54,8 @@ export async function getDashboardMetrics() {
         id: s.id,
         amount: s.totalAmount,
         date: s.createdAt,
-        itemsCount: s.items.length
+        itemsCount: s.items.length,
+        itemsList: s.items.map((i: any) => `${i.batch.product.name} (x${i.quantity})`).join(', ')
     }))
 
     // Chart Data (Group by date)

@@ -2,6 +2,7 @@ import InventoryFilters from "@/components/inventory/inventory-filters"
 import { prisma } from "@/lib/prisma"
 import { AlertCircle, AlertTriangle, Package } from "lucide-react"
 import InventoryActions from "@/components/inventory/inventory-actions"
+import { ExportButton } from "@/components/ui/export-button"
 
 // Types
 type InventoryItem = {
@@ -73,9 +74,33 @@ export default async function InventoryPage(props: {
         return true
     })
 
+    const exportData = products.map(p => ({
+        name: p.name,
+        category: p.category,
+        totalStock: p.batches.reduce((acc, b) => acc + b.quantity, 0),
+        minStock: p.minStockLevel,
+        costPrice: p.price,
+        sellingPrice: p.sellingPrice,
+        status: p.batches.reduce((acc, b) => acc + b.quantity, 0) <= p.minStockLevel ? 'LOW STOCK' : 'OK'
+    }));
+
     return (
         <div className="space-y-6">
-            <InventoryFilters />
+            <div className="flex justify-between items-center">
+                <InventoryFilters />
+                <ExportButton
+                    data={exportData}
+                    columns={[
+                        { header: 'Medicine Name', key: 'name' },
+                        { header: 'Category', key: 'category' },
+                        { header: 'Total Stock', key: 'totalStock' },
+                        { header: 'Min Stock', key: 'minStock' },
+                        { header: 'Selling Price ($)', key: 'sellingPrice' },
+                        { header: 'Status', key: 'status' }
+                    ]}
+                    filename="inventory_summary"
+                />
+            </div>
 
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
@@ -161,3 +186,4 @@ export default async function InventoryPage(props: {
         </div>
     )
 }
+

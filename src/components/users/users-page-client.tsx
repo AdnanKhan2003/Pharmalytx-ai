@@ -7,6 +7,7 @@ import { toast } from "sonner"
 import { Plus, Trash2, User as UserIcon, Shield, ShieldAlert, Store } from "lucide-react"
 import { UserRole } from "@prisma/client"
 import DeleteConfirmationModal from "@/components/ui/delete-modal"
+import { ExportButton } from "@/components/ui/export-button"
 
 type User = {
     id: string
@@ -63,6 +64,13 @@ export default function UsersPage({ initialUsers }: { initialUsers: User[] }) {
         }
     }
 
+    const exportData = users.map(u => ({
+        name: u.name,
+        email: u.email,
+        role: u.role,
+        joinedAt: new Date(u.createdAt).toLocaleDateString()
+    }));
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
@@ -70,13 +78,25 @@ export default function UsersPage({ initialUsers }: { initialUsers: User[] }) {
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">User Management</h1>
                     <p className="text-gray-500 dark:text-gray-400">Manage access and roles for your pharmacy staff.</p>
                 </div>
-                <button
-                    onClick={() => setIsFormOpen(!isFormOpen)}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium transition-colors"
-                >
-                    <Plus className="h-4 w-4" />
-                    Add Staff
-                </button>
+                <div className="flex gap-2">
+                    <ExportButton
+                        data={exportData}
+                        columns={[
+                            { header: 'Full Name', key: 'name' },
+                            { header: 'Email', key: 'email' },
+                            { header: 'Role', key: 'role' },
+                            { header: 'Joined Date', key: 'joinedAt' }
+                        ]}
+                        filename="staff_list"
+                    />
+                    <button
+                        onClick={() => setIsFormOpen(!isFormOpen)}
+                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium transition-colors"
+                    >
+                        <Plus className="h-4 w-4" />
+                        Add Staff
+                    </button>
+                </div>
             </div>
 
             {isFormOpen && (
@@ -183,3 +203,4 @@ function SubmitButton() {
         </button>
     )
 }
+

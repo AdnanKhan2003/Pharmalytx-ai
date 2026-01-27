@@ -9,8 +9,7 @@ import { toast } from "sonner"
 type Product = {
     id: string
     name: string
-    id: string
-    name: string
+
     price: number // Cost Price
     sellingPrice: number // Selling Price
     category: string

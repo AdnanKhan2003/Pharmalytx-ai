@@ -1,12 +1,25 @@
 import { getDetailedReports } from "@/app/actions/reports"
 import CategoryPieChart from "@/components/reports/category-pie-chart"
 import { DollarSign, TrendingUp, Percent, BarChart3 } from "lucide-react"
+import { ExportButton } from "@/components/ui/export-button"
 
 export default async function ReportsPage() {
     const reports = await getDetailedReports()
 
     return (
         <div className="space-y-6">
+            <div className="flex justify-end">
+                <ExportButton
+                    data={reports.topSellingProducts}
+                    columns={[
+                        { header: 'Product Name', key: 'name' },
+                        { header: 'Units Sold', key: 'quantity' },
+                        { header: 'Revenue Generated ($)', key: 'revenue' }
+                    ]}
+                    filename="sales_reports_summary"
+                />
+            </div>
+
             <div className="grid gap-6 md:grid-cols-3">
                 <MetricCard
                     title="Net Profit"

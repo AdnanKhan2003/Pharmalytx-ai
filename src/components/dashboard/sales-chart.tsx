@@ -27,7 +27,7 @@ export default function SalesChart({ data }: { data: any[] }) {
     return (
         <div ref={containerRef} className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data}>
+                <AreaChart data={data} margin={{ top: 10, right: 10, left: 25, bottom: 30 }}>
                     <defs>
                         <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
@@ -41,6 +41,7 @@ export default function SalesChart({ data }: { data: any[] }) {
                         tickLine={false}
                         tick={{ fill: '#9ca3af', fontSize: 12 }}
                         dy={10}
+                        label={{ value: 'Date', position: 'insideBottom', offset: -20, fill: '#9ca3af', fontSize: 12 }}
                     />
                     <YAxis
                         axisLine={false}
@@ -48,6 +49,7 @@ export default function SalesChart({ data }: { data: any[] }) {
                         tick={{ fill: '#9ca3af', fontSize: 12 }}
                         dx={-10}
                         tickFormatter={(value) => `$${value}`}
+                        label={{ value: 'Revenue ($)', angle: -90, position: 'insideLeft', dx: -15, style: { textAnchor: 'middle' }, fill: '#9ca3af', fontSize: 12 }}
                     />
                     <Tooltip
                         contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
