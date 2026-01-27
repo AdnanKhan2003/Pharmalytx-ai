@@ -103,12 +103,19 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
     )
 }
 
+import Image from "next/image"
+
 function SidebarContent({ navItems, pathname }: { navItems: any[], pathname: string }) {
     return (
         <>
             <div className="p-6 flex items-center gap-3">
-                <div className="h-8 w-8 bg-linear-to-br from-blue-600 to-teal-500 rounded-lg flex items-center justify-center text-white">
-                    <Pill className="h-5 w-5" />
+                <div className="relative h-10 w-10 shrink-0">
+                    <Image
+                        src="/transparent-logo.png"
+                        alt="Pharmalytix AI Logo"
+                        fill
+                        className="object-contain"
+                    />
                 </div>
                 <span className="font-bold text-lg text-gray-800 dark:text-gray-100 tracking-tight">Pharmalytix AI</span>
             </div>
