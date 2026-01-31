@@ -37,6 +37,7 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
     const navItems = allNavItems.filter(item => item.roles.includes(userRole))
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const [isProfileOpen, setIsProfileOpen] = useState(false)
 
     return (
         <div className="flex h-screen bg-slate-50 dark:bg-black overflow-hidden transition-colors duration-300">
@@ -79,7 +80,7 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
                 <div className="absolute top-0 left-0 w-full h-96 bg-linear-to-b from-blue-50/50 to-transparent dark:from-blue-900/10 pointer-events-none" />
 
                 <div className="p-4 md:p-8 relative z-0">
-                    <header className="mb-8 flex justify-between items-center gap-4">
+                    <header className="sticky top-0 z-30 mb-8 flex justify-between items-center gap-4 py-4 -mx-4 px-4 md:-mx-8 md:px-8 bg-slate-50/80 dark:bg-black/80 backdrop-blur-md transition-all duration-300">
                         <div className="flex items-center gap-4">
                             <button
                                 onClick={() => setIsMobileMenuOpen(true)}
@@ -94,8 +95,38 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
                                 <p className="text-gray-500 dark:text-gray-400 text-sm hidden md:block">Welcome back, {session?.user?.name || 'User'}</p>
                             </div>
                         </div>
-                        <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 border-2 border-white dark:border-gray-800 shadow-sm flex items-center justify-center text-blue-700 dark:text-blue-400 font-bold shrink-0">
-                            {session?.user?.name?.charAt(0).toUpperCase() || 'U'}
+
+                        <div className="relative">
+                            <button
+                                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 border-2 border-white dark:border-gray-800 shadow-sm flex items-center justify-center text-blue-700 dark:text-blue-400 font-bold shrink-0 hover:shadow-md transition-all cursor-pointer"
+                            >
+                                {session?.user?.name?.charAt(0).toUpperCase() || 'U'}
+                            </button>
+
+                            {isProfileOpen && (
+                                <>
+                                    <div
+                                        className="fixed inset-0 z-30"
+                                        onClick={() => setIsProfileOpen(false)}
+                                    />
+                                    <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden z-40 animate-in fade-in zoom-in-95 duration-200">
+                                        <div className="p-3 border-b border-gray-100 dark:border-gray-800">
+                                            <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{session?.user?.name || 'User'}</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{session?.user?.email || 'user@example.com'}</p>
+                                        </div>
+                                        <div className="p-1">
+                                            <button
+                                                onClick={() => signOut()}
+                                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                            >
+                                                <LogOut className="h-4 w-4" />
+                                                Sign Out
+                                            </button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </header>
                     {children}
