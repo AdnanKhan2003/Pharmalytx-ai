@@ -86,11 +86,11 @@ export default async function InventoryPage(props: {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div className="w-full md:w-auto">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                <div className="w-full lg:w-auto">
                     <InventoryFilters />
                 </div>
-                <div className="w-full md:w-auto flex justify-end">
+                <div className="w-full lg:w-auto flex justify-end">
                     <ExportButton
                         data={exportData}
                         columns={[
