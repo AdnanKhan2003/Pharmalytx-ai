@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react" // Client side sign in
 import { useRouter } from "next/navigation"
 import { gsap } from "gsap"
 import { Loader2, Pill } from "lucide-react"
+import Image from "next/image"
 
 export default function LoginPage() {
     const router = useRouter()
@@ -89,10 +90,16 @@ export default function LoginPage() {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-teal-400/20 rounded-full blur-[100px]" />
             </div>
 
-            <div className="login-card relative z-10 w-full max-w-md p-8 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/50 dark:border-gray-800 rounded-3xl shadow-2xl">
+            <div className="login-card relative z-10 w-[90%] md:w-full max-w-md p-6 md:p-8 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/50 dark:border-gray-800 rounded-3xl shadow-2xl">
                 <div className="flex flex-col items-center mb-8 login-item">
-                    <div className="h-12 w-12 bg-linear-to-br from-blue-600 to-teal-500 rounded-xl flex items-center justify-center text-white shadow-lg mb-4">
-                        <Pill className="h-6 w-6" />
+                    <div className="mb-4 shadow-2xl rounded-full">
+                        <Image
+                            src="/transparent-logo.png"
+                            alt="Pharmalytix AI Logo"
+                            width={80}
+                            height={80}
+                            className="rounded-full object-cover"
+                        />
                     </div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Pharmalytix AI</h1>
                     <p className="text-gray-500 dark:text-gray-400 text-sm">Sign in to your dashboard</p>
@@ -135,7 +142,7 @@ export default function LoginPage() {
                     <button type="button" onClick={() => handleQuickLogin('ADMIN')} className="w-full text-xs bg-gray-50 hover:bg-gray-100 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 py-3 px-4 rounded-xl border border-gray-200 dark:border-gray-700 transition-all font-medium flex items-center justify-center gap-2 hover:border-blue-300 dark:hover:border-blue-700">
                         Skip & Sign in as <strong>Admin</strong>
                     </button>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <button type="button" onClick={() => handleQuickLogin('PHARMACIST')} className="text-xs bg-gray-50 hover:bg-gray-100 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 py-3 rounded-xl border border-gray-200 dark:border-gray-700 transition-all font-medium hover:border-blue-300 dark:hover:border-blue-700">
                             Skip & Sign in as <strong>Pharmacist</strong>
                         </button>
