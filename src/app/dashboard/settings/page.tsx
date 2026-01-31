@@ -28,22 +28,24 @@ export default function SettingsPage() {
                     </h2>
                 </div>
                 <div className="p-6 space-y-4">
-                    <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
-                        <div className="h-12 w-12 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">
-                            {session?.user?.name?.charAt(0) || 'U'}
-                        </div>
-                        <div>
-                            <p className="font-bold text-gray-900 dark:text-white">{session?.user?.name}</p>
-                            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                                <Mail className="h-3 w-3" />
-                                {session?.user?.email}
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                        <div className="flex items-center gap-4 w-full sm:w-auto">
+                            <div className="h-12 w-12 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shrink-0">
+                                {session?.user?.name?.charAt(0) || 'U'}
+                            </div>
+                            <div>
+                                <p className="font-bold text-gray-900 dark:text-white">{session?.user?.name}</p>
+                                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <Mail className="h-3 w-3" />
+                                    <span className="break-all">{session?.user?.email}</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="ml-auto">
+                        <div className="w-full sm:w-auto sm:ml-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-200 dark:border-gray-700 sm:border-none">
                             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${session?.user?.role === 'ADMIN' ? 'bg-red-50 text-red-700 border-red-100 dark:bg-red-900/20 dark:text-red-400 dark:border-red-900/50' :
-                                    session?.user?.role === 'PHARMACIST' ? 'bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-900/50' :
-                                        'bg-green-50 text-green-700 border-green-100 dark:bg-green-900/20 dark:text-green-400 dark:border-green-900/50'
+                                session?.user?.role === 'PHARMACIST' ? 'bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-900/50' :
+                                    'bg-green-50 text-green-700 border-green-100 dark:bg-green-900/20 dark:text-green-400 dark:border-green-900/50'
                                 }`}>
                                 <Shield className="h-3 w-3" />
                                 {session?.user?.role}
@@ -62,7 +64,7 @@ export default function SettingsPage() {
                     </h2>
                 </div>
                 <div className="p-6 space-y-6">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div>
                             <p className="font-medium text-gray-900 dark:text-white">Appearance</p>
                             <p className="text-sm text-gray-500 dark:text-gray-400">Customize how the app looks on your device</p>
@@ -76,14 +78,14 @@ export default function SettingsPage() {
 
             {/* Sign Out */}
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden p-6">
-                <div className="flex items-center justify-between">
-                    <div>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="text-center sm:text-left">
                         <h3 className="font-bold text-gray-900 dark:text-white">Sign Out</h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400">Securely log out of your account</p>
                     </div>
                     <button
                         onClick={() => signOut()}
-                        className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-700 dark:bg-red-900/20 dark:hover:bg-red-900/30 dark:text-red-400 px-4 py-2 rounded-xl font-medium transition-colors"
+                        className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-700 dark:bg-red-900/20 dark:hover:bg-red-900/30 dark:text-red-400 px-4 py-2 rounded-xl font-medium transition-colors w-full sm:w-auto justify-center"
                     >
                         <LogOut className="h-4 w-4" />
                         Log Out

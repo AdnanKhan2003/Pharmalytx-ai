@@ -98,21 +98,21 @@ export default function ReturnInterface() {
         <div className="grid gap-6 lg:grid-cols-2">
             {/* Search Section */}
             <div className="space-y-6">
-                <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+                <div className="bg-white dark:bg-gray-900 p-4 md:p-6 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
                     <h2 className="font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
                         <Search className="h-5 w-5 text-blue-600" />
                         Find Sale
                     </h2>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
                         <input
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Search by Sale ID..."
-                            className="flex-1 px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                            className="flex-1 px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-gray-400 dark:placeholder:text-gray-500 w-full"
                         />
                         <button
                             onClick={handleSearch}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium transition-colors"
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium transition-colors w-full sm:w-auto"
                         >
                             Search
                         </button>

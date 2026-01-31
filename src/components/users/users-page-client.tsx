@@ -73,12 +73,12 @@ export default function UsersPage({ initialUsers }: { initialUsers: User[] }) {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">User Management</h1>
                     <p className="text-gray-500 dark:text-gray-400">Manage access and roles for your pharmacy staff.</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
                     <ExportButton
                         data={exportData}
                         columns={[
@@ -91,7 +91,7 @@ export default function UsersPage({ initialUsers }: { initialUsers: User[] }) {
                     />
                     <button
                         onClick={() => setIsFormOpen(!isFormOpen)}
-                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium transition-colors"
+                        className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium transition-colors"
                     >
                         <Plus className="h-4 w-4" />
                         Add Staff
@@ -128,7 +128,47 @@ export default function UsersPage({ initialUsers }: { initialUsers: User[] }) {
                 </div>
             )}
 
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
+            {/* Mobile Card View */}
+            <div className="grid grid-cols-1 gap-4 md:hidden">
+                {users.map((user) => (
+                    <div key={user.id} className="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
+                        <div className="flex justify-between items-start mb-4 flex-wrap gap-y-2">
+                            <div className="flex items-center gap-3">
+                                <div className="h-10 w-10 rounded-full bg-linear-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 font-bold">
+                                    {user.name.charAt(0)}
+                                </div>
+                                <div>
+                                    <p className="font-medium text-gray-900 dark:text-white">{user.name}</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
+                                </div>
+                            </div>
+                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${user.role === 'ADMIN' ? 'bg-red-50 text-red-700 border-red-100 dark:bg-red-900/20 dark:text-red-400 dark:border-red-900/50' :
+                                user.role === 'PHARMACIST' ? 'bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-900/50' :
+                                    'bg-green-50 text-green-700 border-green-100 dark:bg-green-900/20 dark:text-green-400 dark:border-green-900/50'
+                                }`}>
+                                <RoleIcon role={user.role} />
+                                {user.role}
+                            </span>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                                Joined {new Date(user.createdAt).toLocaleDateString()}
+                            </div>
+                            <button
+                                onClick={() => setUserToDelete(user.id)}
+                                className="text-gray-400 hover:text-red-600 transition-colors p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg flex items-center gap-2 text-sm"
+                            >
+                                <Trash2 className="h-4 w-4" />
+                                <span>Delete User</span>
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
                 <table className="w-full">
                     <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800">
                         <tr>

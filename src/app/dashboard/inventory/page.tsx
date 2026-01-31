@@ -86,23 +86,93 @@ export default async function InventoryPage(props: {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <InventoryFilters />
-                <ExportButton
-                    data={exportData}
-                    columns={[
-                        { header: 'Medicine Name', key: 'name' },
-                        { header: 'Category', key: 'category' },
-                        { header: 'Total Stock', key: 'totalStock' },
-                        { header: 'Min Stock', key: 'minStock' },
-                        { header: 'Selling Price ($)', key: 'sellingPrice' },
-                        { header: 'Status', key: 'status' }
-                    ]}
-                    filename="inventory_summary"
-                />
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="w-full md:w-auto">
+                    <InventoryFilters />
+                </div>
+                <div className="w-full md:w-auto flex justify-end">
+                    <ExportButton
+                        data={exportData}
+                        columns={[
+                            { header: 'Medicine Name', key: 'name' },
+                            { header: 'Category', key: 'category' },
+                            { header: 'Total Stock', key: 'totalStock' },
+                            { header: 'Min Stock', key: 'minStock' },
+                            { header: 'Selling Price ($)', key: 'sellingPrice' },
+                            { header: 'Status', key: 'status' }
+                        ]}
+                        filename="inventory_summary"
+                    />
+                </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+            {/* Mobile Card View */}
+            <div className="grid grid-cols-1 gap-4 md:hidden">
+                {products.map((product) => {
+                    const totalStock = product.batches.reduce((acc, b) => acc + b.quantity, 0)
+                    const isLowStock = totalStock <= product.minStockLevel
+                    const nearExpiryBatch = product.batches.find(b => {
+                        const daysUntilExpiry = Math.ceil((new Date(b.expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+                        return daysUntilExpiry <= 60
+                    })
+
+                    return (
+                        <div key={product.id} className="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm space-y-4">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <h3 className="font-semibold text-gray-900 dark:text-white">{product.name}</h3>
+                                    <span className="inline-block mt-1 px-2 py-0.5 rounded-md text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
+                                        {product.category}
+                                    </span>
+                                </div>
+                                <InventoryActions productId={product.id} />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <p className="text-gray-500 dark:text-gray-400 text-xs">Total Stock</p>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <span className={`font-semibold ${isLowStock ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white'}`}>
+                                            {totalStock}
+                                        </span>
+                                        {isLowStock && (
+                                            <span className="flex items-center gap-1 text-[10px] font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-1.5 py-0.5 rounded border border-red-100 dark:border-red-900/30">
+                                                <AlertCircle className="h-3 w-3" /> LOW
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="text-gray-500 dark:text-gray-400 text-xs text-right">Selling Price</p>
+                                    <p className="font-medium text-gray-900 dark:text-white text-right mt-1">
+                                        ${product.sellingPrice.toFixed(2)}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {nearExpiryBatch ? (
+                                <div className="flex items-center gap-2 text-xs font-medium text-orange-600 bg-orange-50 dark:bg-orange-900/20 px-3 py-2 rounded-lg border border-orange-100 dark:border-orange-900/30">
+                                    <AlertTriangle className="h-4 w-4 shrink-0" />
+                                    <span>Expiring Soon ({new Date(nearExpiryBatch.expiryDate).toLocaleDateString()})</span>
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-2 text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/20 px-3 py-2 rounded-lg border border-green-100 dark:border-green-900/30">
+                                    <Package className="h-4 w-4 shrink-0" />
+                                    <span>Good Condition</span>
+                                </div>
+                            )}
+                        </div>
+                    )
+                })}
+                {products.length === 0 && (
+                    <div className="text-center py-12 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800">
+                        No medicines found.
+                    </div>
+                )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>

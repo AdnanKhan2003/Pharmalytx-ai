@@ -61,12 +61,12 @@ export default async function AiForecastingPage() {
                     </h3>
                     <div className="space-y-4">
                         {forecasts.filter((f: any) => f.status !== 'HEALTHY').map((item: any) => (
-                            <div key={item.id} className="flex items-center justify-between p-4 bg-orange-50/50 dark:bg-orange-900/20 rounded-xl border border-orange-100 dark:border-orange-900/30">
-                                <div>
+                            <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-orange-50/50 dark:bg-orange-900/20 rounded-xl border border-orange-100 dark:border-orange-900/30 gap-3 sm:gap-0">
+                                <div className="w-full sm:w-auto">
                                     <h4 className="font-semibold text-gray-900 dark:text-gray-100">{item.name}</h4>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">Stock: {item.currentStock} | Predicted: {item.predictedDemand}</p>
                                 </div>
-                                <div className="text-right">
+                                <div className="text-left sm:text-right w-full sm:w-auto flex justify-between sm:block items-center">
                                     <span className="block text-sm font-bold text-orange-600">+{item.suggestion} Units</span>
                                     <span className="text-[10px] uppercase font-bold tracking-wider text-orange-400">Suggested</span>
                                 </div>
@@ -88,13 +88,13 @@ export default async function AiForecastingPage() {
                     </h3>
                     <div className="space-y-4">
                         {forecasts.slice(0, 5).map((item: any) => (
-                            <div key={item.id} className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                                <div>
+                            <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors gap-3 sm:gap-0">
+                                <div className="w-full sm:w-auto">
                                     <p className="font-medium text-gray-900 dark:text-white">{item.name}</p>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">{item.category}</p>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="text-right">
+                                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
+                                    <div className="text-left sm:text-right">
                                         <p className="text-sm font-semibold text-blue-600">{item.dailyRate}/day</p>
                                         <p className="text-[10px] text-gray-400">Velocity</p>
                                     </div>
