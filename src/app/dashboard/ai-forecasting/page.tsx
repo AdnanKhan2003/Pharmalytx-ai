@@ -12,7 +12,8 @@ export default async function AiForecastingPage() {
         predictedDemand: f.predictedDemand,
         dailyRate: f.dailyRate,
         suggestion: f.suggestion,
-        status: f.status
+        status: f.status,
+        reasoning: f.explanation || 'N/A'
     }));
 
     return (
@@ -27,7 +28,8 @@ export default async function AiForecastingPage() {
                         { header: 'Predicted Demand', key: 'predictedDemand' },
                         { header: 'Daily Rate', key: 'dailyRate' },
                         { header: 'Suggested Reorder', key: 'suggestion' },
-                        { header: 'Status', key: 'status' }
+                        { header: 'Status', key: 'status' },
+                        { header: 'AI Reasoning', key: 'reasoning' }
                     ]}
                     filename="ai_forecast_report"
                     className="mb-4"
@@ -41,7 +43,7 @@ export default async function AiForecastingPage() {
                         AI Demand Forecasting
                     </h2>
                     <p className="text-violet-100 max-w-xl">
-                        Our advanced predictive engine analyzes your last 30 days of sales data to forecast future demand and optimize your inventory levels.
+                        Our advanced predictive engine uses <strong>Google Gemini AI</strong> to analyze your last 30 days of sales data, providing context-aware demand forecasting and inventory optimization.
                     </p>
                 </div>
                 {/* Decorative Pattern */}
@@ -65,6 +67,12 @@ export default async function AiForecastingPage() {
                                 <div className="w-full sm:w-auto">
                                     <h4 className="font-semibold text-gray-900 dark:text-gray-100">{item.name}</h4>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">Stock: {item.currentStock} | Predicted: {item.predictedDemand}</p>
+                                    {item.explanation && (
+                                        <p className="text-xs text-blue-600 dark:text-blue-400 mt-1 italic flex items-start gap-1">
+                                            <Sparkles className="h-3 w-3 mt-0.5" />
+                                            {item.explanation}
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="text-left sm:text-right w-full sm:w-auto flex justify-between sm:block items-center">
                                     <span className="block text-sm font-bold text-orange-600">+{item.suggestion} Units</span>
