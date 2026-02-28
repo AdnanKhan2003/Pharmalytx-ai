@@ -8,6 +8,26 @@ import { authConfig } from './auth.config';
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
     ...authConfig,
+    callbacks: {
+        ...authConfig.callbacks,
+        async session({ session, token }) {
+            if (token.sub && session.user) {
+                session.user.id = token.sub;
+                session.user.role = token.role as UserRole;
+            }
+            return session;
+        },
+        async jwt({ token }) {
+            if (!token.role) {
+                const user = await prisma.user.findUnique({
+                    where: { email: token.email! },
+                    select: { role: true }
+                });
+                token.role = user?.role || 'CASHIER';
+            }
+            return token;
+        }
+    },
     providers: [
         Credentials({
             async authorize(credentials) {
@@ -18,7 +38,11 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 if (parsedCredentials.success) {
                     const { email, password } = parsedCredentials.data;
                     const user = await prisma.user.findUnique({ where: { email } });
-                    if (!user) return null;
+                    if (!user) return null;
+
+
+
+
                     const passwordsMatch = await bcrypt.compare(password, user.password);
 
                     if (passwordsMatch) return user;
