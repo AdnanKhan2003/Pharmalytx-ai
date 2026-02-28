@@ -4,9 +4,7 @@ import { createProduct } from "@/app/actions/inventory"
 import { useFormStatus } from "react-dom"
 import { useActionState } from "react"
 import { useState, useEffect } from "react"
-import { Loader2, Save } from "lucide-react"
-
-// Categories for dropdown (could be dynamic later)
+import { Loader2, Save } from "lucide-react"
 const CATEGORIES = [
     "Antibiotics", "Analgesics", "Antipyretics", "Antiseptics",
     "Vitamins", "Supplements", "First Aid", "Diabetes", "Cardiology"
@@ -14,7 +12,7 @@ const CATEGORIES = [
 
 export default function AddStockForm({ suppliers }: { suppliers: { id: string, name: string }[] }) {
     const initialState = { message: '', errors: {} }
-    const [state, dispatch] = useActionState(createProduct, initialState) // Updated hook name for React 19/Next 15+
+    const [state, dispatch] = useActionState(createProduct, initialState)
 
     return (
         <form action={dispatch} className="space-y-8">

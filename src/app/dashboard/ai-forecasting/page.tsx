@@ -46,7 +46,7 @@ export default async function AiForecastingPage() {
                         Our advanced predictive engine uses <strong>Google Gemini AI</strong> to analyze your last 30 days of sales data, providing context-aware demand forecasting and inventory optimization.
                     </p>
                 </div>
-                {/* Decorative Pattern */}
+                {}
                 <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
                     <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                         <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white" />
@@ -55,7 +55,7 @@ export default async function AiForecastingPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Reorder Recommendations */}
+                {}
                 <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
                     <h3 className="font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
                         <AlertCircle className="h-5 w-5 text-orange-500" />
@@ -88,7 +88,7 @@ export default async function AiForecastingPage() {
                     </div>
                 </div>
 
-                {/* Healthy Stock / Trends */}
+                {}
                 <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
                     <h3 className="font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
                         <TrendingUp className="h-5 w-5 text-blue-500" />

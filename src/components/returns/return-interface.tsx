@@ -28,14 +28,14 @@ export default function ReturnInterface() {
     const [query, setQuery] = useState("")
     const [sales, setSales] = useState<Sale[]>([])
     const [selectedSale, setSelectedSale] = useState<Sale | null>(null)
-    const [returnItems, setReturnItems] = useState<Record<string, number>>({}) // batchId -> quantity
+    const [returnItems, setReturnItems] = useState<Record<string, number>>({})
     const [reason, setReason] = useState("Customer Return")
     const [loading, setLoading] = useState(false)
     const router = useRouter()
 
     const handleSearch = async () => {
         const results = await getSalesForReturn(query)
-        setSales(results as any) // Type casting for simplicity here
+        setSales(results as any)
         setSelectedSale(null)
     }
 
@@ -96,7 +96,7 @@ export default function ReturnInterface() {
 
     return (
         <div className="grid gap-6 lg:grid-cols-2">
-            {/* Search Section */}
+            {}
             <div className="space-y-6">
                 <div className="bg-white dark:bg-gray-900 p-4 md:p-6 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
                     <h2 className="font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
@@ -139,7 +139,7 @@ export default function ReturnInterface() {
                 </div>
             </div>
 
-            {/* Return Process Section */}
+            {}
             <div className="space-y-6">
                 {selectedSale ? (
                     <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm animate-in slide-in-from-right-4 fade-in duration-300">

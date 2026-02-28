@@ -11,11 +11,7 @@ export async function processReturn(saleId: string, returnItems: { batchId: stri
     }
 
     try {
-        await prisma.$transaction(async (tx) => {
-            // 1. Calculate Refund Amount
-            // We need to fetch original price from SaleItems? 
-            // Better to pass it or fetch here.
-            // Let's fetch the Sale first
+        await prisma.$transaction(async (tx) => {
             const sale = await tx.sale.findUnique({
                 where: { id: saleId },
                 include: { items: true }
@@ -25,23 +21,18 @@ export async function processReturn(saleId: string, returnItems: { batchId: stri
 
             let refundAmount = 0
 
-            for (const rItem of returnItems) {
-                // Find original sale item to get price
+            for (const rItem of returnItems) {
                 const saleItem = sale.items.find(i => i.batchId === rItem.batchId)
                 if (!saleItem) throw new Error(`Batch ${rItem.batchId} not found in this sale`)
 
                 if (rItem.quantity > saleItem.quantity) throw new Error("Cannot return more than sold")
 
-                refundAmount += (saleItem.price * rItem.quantity)
-
-                // 2. Increment Stock
+                refundAmount += (saleItem.price * rItem.quantity)
                 await tx.batch.update({
                     where: { id: rItem.batchId },
                     data: { quantity: { increment: rItem.quantity } }
                 })
-            }
-
-            // 3. Create Return Record
+            }
             await tx.returnRecord.create({
                 data: {
                     saleId,
@@ -69,9 +60,7 @@ export async function processReturn(saleId: string, returnItems: { batchId: stri
     }
 }
 
-export async function getSalesForReturn(query: string) {
-    // Search sales by ID or (if we had customer name)
-    // For now simple ID match or recent
+export async function getSalesForReturn(query: string) {
     if (!query) {
         return prisma.sale.findMany({
             take: 10,

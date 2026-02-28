@@ -66,8 +66,7 @@ export default function EditSupplierForm({ supplier }: { supplier: any }) {
                             <input
                                 type="tel"
                                 name="number"
-                                id="number"
-                                // Note: Schema doesn't have number, it has address/email/contact. Assuming number is mapped if added later, but for now just placeholder input as per add form
+                                id="number"
                                 className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                                 placeholder="+1 234 567 890"
                             />
@@ -90,7 +89,6 @@ export default function EditSupplierForm({ supplier }: { supplier: any }) {
                     </div>
                 </div>
             </div>
-
 
             {
                 state.message && (

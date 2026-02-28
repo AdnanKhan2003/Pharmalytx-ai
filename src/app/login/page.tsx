@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useFormStatus } from "react-dom"
-import { signIn } from "next-auth/react" // Client side sign in
+import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { gsap } from "gsap"
 import { Loader2, Pill } from "lucide-react"
@@ -21,9 +21,7 @@ export default function LoginPage() {
             CASHIER: { email: 'cashier@pharmalytix.com', password: 'password123' }
         }
 
-        const { email, password } = creds[role]
-
-        // Fill inputs programmatically
+        const { email, password } = creds[role]
         const emailInput = document.getElementById('email') as HTMLInputElement
         const passwordInput = document.getElementById('password') as HTMLInputElement
 
@@ -84,7 +82,7 @@ export default function LoginPage() {
             className="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-slate-50 dark:bg-black transition-colors duration-300"
             ref={containerRef}
         >
-            {/* Background Elements */}
+            {}
             <div className="absolute inset-0 z-0">
                 <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/20 rounded-full blur-[100px]" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-teal-400/20 rounded-full blur-[100px]" />

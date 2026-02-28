@@ -16,31 +16,20 @@ export async function getDetailedReports() {
             }
         },
         orderBy: { createdAt: 'desc' }
-    })
-
-    // 1. Calculate Profit Margins
+    })
     let totalRevenue = 0
-    let totalCost = 0
-
-    // 2. Category Breakdown
-    const categorySales: Record<string, number> = {}
-
-    // 3. Top Products
+    let totalCost = 0
+    const categorySales: Record<string, number> = {}
     const productPerformance: Record<string, { name: string, quantity: number, revenue: number }> = {}
 
     sales.forEach(sale => {
         totalRevenue += sale.totalAmount
 
-        sale.items.forEach((item: any) => {
-            // Cost calculation 
+        sale.items.forEach((item: any) => {
             const cost = item.batch.product.price * item.quantity
-            totalCost += cost
-
-            // Category
+            totalCost += cost
             const cat = item.batch.product.category
-            categorySales[cat] = (categorySales[cat] || 0) + (item.price * item.quantity)
-
-            // Top Products
+            categorySales[cat] = (categorySales[cat] || 0) + (item.price * item.quantity)
             const pid = item.batch.productId
             if (!productPerformance[pid]) {
                 productPerformance[pid] = {

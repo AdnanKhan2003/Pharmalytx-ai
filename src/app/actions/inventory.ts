@@ -3,9 +3,7 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
-import { redirect } from "next/navigation"
-
-// Schema for validation
+import { redirect } from "next/navigation"
 const ProductSchema = z.object({
     name: z.string().min(1, "Name is required"),
     category: z.string().min(1, "Category is required"),
@@ -13,8 +11,7 @@ const ProductSchema = z.object({
     minStockLevel: z.coerce.number().min(0),
     price: z.coerce.number().min(0, "Cost price must be positive"),
     sellingPrice: z.coerce.number().min(0, "Selling price must be positive"),
-    supplierId: z.string().min(1, "Supplier is required"),
-    // Initial Batch
+    supplierId: z.string().min(1, "Supplier is required"),
     batchNumber: z.string().min(1, "Batch number is required"),
     quantity: z.coerce.number().min(1, "Quantity must be at least 1"),
     expiryDate: z.string().refine((date) => new Date(date) > new Date(), {
@@ -56,8 +53,7 @@ export async function createProduct(prevState: any, formData: FormData) {
     } = validatedFields.data
 
     try {
-        await prisma.$transaction(async (tx) => {
-            // 1. Create Product
+        await prisma.$transaction(async (tx) => {
             const product = await tx.product.create({
                 data: {
                     name,
@@ -68,9 +64,7 @@ export async function createProduct(prevState: any, formData: FormData) {
                     sellingPrice,
                     supplierId,
                 }
-            })
-
-            // 2. Create Initial Batch
+            })
             await tx.batch.create({
                 data: {
                     productId: product.id,
@@ -123,18 +117,16 @@ export async function createSupplier(prevState: any, formData: FormData) {
     }
 
     revalidatePath('/dashboard/inventory')
-    revalidatePath('/dashboard/inventory/add') // Revalidate inventory add page to show new supplier
+    revalidatePath('/dashboard/inventory/add')
     redirect('/dashboard/suppliers')
 }
 
 export async function deleteProduct(productId: string) {
     try {
-        await prisma.$transaction(async (tx) => {
-            // Delete batches first due to FK constraint
+        await prisma.$transaction(async (tx) => {
             await tx.batch.deleteMany({
                 where: { productId }
-            })
-            // Delete product
+            })
             await tx.product.delete({
                 where: { id: productId }
             })
@@ -148,8 +140,7 @@ export async function deleteProduct(productId: string) {
 
 export async function deleteSupplier(supplierId: string) {
     try {
-        await prisma.$transaction(async (tx) => {
-            // Check for associated products
+        await prisma.$transaction(async (tx) => {
             const productCount = await tx.product.count({
                 where: { supplierId }
             })
@@ -167,7 +158,6 @@ export async function deleteSupplier(supplierId: string) {
         return { success: false, message: error.message || 'Failed to delete supplier' }
     }
 }
-
 
 export async function getSupplier(id: string) {
     return await prisma.supplier.findUnique({
@@ -210,9 +200,7 @@ export async function getProduct(id: string) {
             batches: true
         }
     })
-}
-
-// Schema for Product Update (without batch info since we edit product details separately from batches usually, but for simplicity allowing basic edits)
+}
 const ProductUpdateSchema = z.object({
     name: z.string().min(1, "Name is required"),
     category: z.string().min(1, "Category is required"),

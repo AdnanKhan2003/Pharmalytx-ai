@@ -27,9 +27,7 @@ export default function UsersPage({ initialUsers }: { initialUsers: User[] }) {
         if (result.success) {
             toast.success(result.message)
             setIsFormOpen(false)
-            formRef.current?.reset()
-            // In a real app we might re-fetch or use router.refresh()
-            // implementing naive optimistic update or just refresh for now
+            formRef.current?.reset()
             window.location.reload()
         } else {
             toast.error(result.message)
@@ -128,7 +126,7 @@ export default function UsersPage({ initialUsers }: { initialUsers: User[] }) {
                 </div>
             )}
 
-            {/* Mobile Card View */}
+            {}
             <div className="grid grid-cols-1 gap-4 md:hidden">
                 {users.map((user) => (
                     <div key={user.id} className="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
@@ -167,7 +165,7 @@ export default function UsersPage({ initialUsers }: { initialUsers: User[] }) {
                 ))}
             </div>
 
-            {/* Desktop Table View */}
+            {}
             <div className="hidden md:block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
                 <table className="w-full">
                     <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800">

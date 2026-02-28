@@ -68,9 +68,7 @@ export async function deleteUser(userId: string) {
     const session = await auth()
     if (session?.user?.role !== 'ADMIN') {
         return { success: false, message: "Unauthorized" }
-    }
-
-    // Prevent deleting self
+    }
     if (session.user.id === userId) {
         return { success: false, message: "Cannot delete your own account" }
     }

@@ -56,8 +56,7 @@ export default async function SalesPage() {
                     filename="sales_history"
                 />
             </div>
-            {/* Header is handled in layout, but we might want a different view here if we want full screen POS. 
-                 For now, render inside dashboard layout. */}
+            {}
             <PosInterface products={products} />
         </div>
     )

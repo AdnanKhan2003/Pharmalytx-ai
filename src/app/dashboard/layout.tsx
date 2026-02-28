@@ -20,7 +20,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 function DashboardContent({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
     const { data: session } = useSession()
-    const userRole = session?.user?.role || 'CASHIER' // Default to safest
+    const userRole = session?.user?.role || 'CASHIER'
 
     const allNavItems = [
         { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard, roles: ['ADMIN', 'PHARMACIST', 'CASHIER'] },
@@ -41,7 +41,7 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
 
     return (
         <div className="flex h-screen bg-slate-50 dark:bg-black overflow-hidden transition-colors duration-300">
-            {/* Desktop Sidebar */}
+            {}
             <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 hidden md:flex flex-col z-20 transition-colors duration-300">
                 <SidebarContent navItems={navItems} pathname={pathname} />
                 <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex items-center gap-2">
@@ -50,12 +50,12 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
                 </div>
             </aside>
 
-            {/* Mobile Sidebar Overlay */}
+            {}
             {isMobileMenuOpen && (
                 <div className="fixed inset-0 bg-black/50 z-30 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
             )}
 
-            {/* Mobile Sidebar */}
+            {}
             <aside className={cn(
                 "fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transform transition-transform duration-300 md:hidden flex flex-col",
                 isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
@@ -74,9 +74,9 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
                 </div>
             </aside>
 
-            {/* Main Content */}
+            {}
             <main className="flex-1 overflow-auto relative w-full">
-                {/* Decorative Gradients */}
+                {}
                 <div className="absolute top-0 left-0 w-full h-96 bg-linear-to-b from-blue-50/50 to-transparent dark:from-blue-900/10 pointer-events-none" />
 
                 <div className="p-4 md:p-8 relative z-0">

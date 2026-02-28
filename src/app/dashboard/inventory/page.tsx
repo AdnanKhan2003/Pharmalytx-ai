@@ -2,9 +2,7 @@ import InventoryFilters from "@/components/inventory/inventory-filters"
 import { prisma } from "@/lib/prisma"
 import { AlertCircle, AlertTriangle, Package } from "lucide-react"
 import InventoryActions from "@/components/inventory/inventory-actions"
-import { ExportButton } from "@/components/ui/export-button"
-
-// Types
+import { ExportButton } from "@/components/ui/export-button"
 type InventoryItem = {
     id: string
     name: string
@@ -31,9 +29,7 @@ export default async function InventoryPage(props: {
     const searchParams = await props.searchParams
     const query = searchParams?.query || ''
     const status = searchParams?.status || ''
-    const category = searchParams?.category || ''
-
-    // 1. Fetch data with basic filtering (Search + Category)
+    const category = searchParams?.category || ''
     const rawProducts = await prisma.product.findMany({
         where: {
             AND: [
@@ -52,9 +48,7 @@ export default async function InventoryPage(props: {
         orderBy: {
             name: 'asc'
         }
-    })
-
-    // 2. Post-process for complex filters (Stock Status)
+    })
     const products = rawProducts.filter(product => {
         if (!status) return true
 
@@ -106,7 +100,7 @@ export default async function InventoryPage(props: {
                 </div>
             </div>
 
-            {/* Mobile Card View */}
+            {}
             <div className="grid grid-cols-1 gap-4 md:hidden">
                 {products.map((product) => {
                     const totalStock = product.batches.reduce((acc, b) => acc + b.quantity, 0)
@@ -171,7 +165,7 @@ export default async function InventoryPage(props: {
                 )}
             </div>
 
-            {/* Desktop Table View */}
+            {}
             <div className="hidden md:block bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
@@ -188,9 +182,7 @@ export default async function InventoryPage(props: {
                         <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                             {products.map((product) => {
                                 const totalStock = product.batches.reduce((acc, b) => acc + b.quantity, 0)
-                                const isLowStock = totalStock <= product.minStockLevel
-
-                                // Check if any batch is expiring within 60 days
+                                const isLowStock = totalStock <= product.minStockLevel
                                 const nearExpiryBatch = product.batches.find(b => {
                                     const daysUntilExpiry = Math.ceil((new Date(b.expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
                                     return daysUntilExpiry <= 60

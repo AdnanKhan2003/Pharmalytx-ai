@@ -17,13 +17,12 @@ export async function processSale(items: CartItem[], totalAmount: number, paymen
     }
 
     try {
-        await prisma.$transaction(async (tx) => {
-            // 1. Create Sale Record
+        await prisma.$transaction(async (tx) => {
             const sale = await tx.sale.create({
                 data: {
                     totalAmount,
                     paymentMethod,
-                    cashierId: 'clrc4w7w2000008l43y7g6789', // TODO: Get actual logged in user ID
+                    cashierId: 'clrc4w7w2000008l43y7g6789',
                     items: {
                         create: items.map(item => ({
                             batchId: item.batchId,
@@ -32,11 +31,8 @@ export async function processSale(items: CartItem[], totalAmount: number, paymen
                         }))
                     }
                 }
-            })
-
-            // 2. Decrement Stock for each Batch
-            for (const item of items) {
-                // Check if enough stock exists first (optional but safer)
+            })
+            for (const item of items) {
                 const batch = await tx.batch.findUnique({ where: { id: item.batchId } })
                 if (!batch || batch.quantity < item.quantity) {
                     throw new Error(`Insufficient stock for batch ${item.batchId}`)

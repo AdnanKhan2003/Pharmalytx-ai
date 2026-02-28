@@ -19,7 +19,7 @@ export default function SettingsPage() {
                 </div>
             </div>
 
-            {/* Profile Card */}
+            {}
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-gray-100 dark:border-gray-800">
                     <h2 className="font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
@@ -55,7 +55,7 @@ export default function SettingsPage() {
                 </div>
             </div>
 
-            {/* Preferences */}
+            {}
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-gray-100 dark:border-gray-800">
                     <h2 className="font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
@@ -76,7 +76,7 @@ export default function SettingsPage() {
                 </div>
             </div>
 
-            {/* Sign Out */}
+            {}
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden p-6">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="text-center sm:text-left">

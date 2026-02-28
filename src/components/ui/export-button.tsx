@@ -51,7 +51,7 @@ export function ExportButton({ data, columns, filename = 'export', className }: 
             body: tableRows,
             startY: 20,
             styles: { fontSize: 8 },
-            headStyles: { fillColor: [22, 163, 74] } // Green-ish color
+            headStyles: { fillColor: [22, 163, 74] }
         });
 
         doc.text(filename.replace(/-/g, ' ').toUpperCase(), 14, 15);
@@ -93,7 +93,7 @@ export function ExportButton({ data, columns, filename = 'export', className }: 
                 </div>
             )}
 
-            {/* Backdrop to close on click outside */}
+            {}
             {isOpen && (
                 <div
                     className="fixed inset-0 z-40 bg-transparent"

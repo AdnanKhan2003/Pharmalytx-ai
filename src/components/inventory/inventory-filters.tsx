@@ -87,7 +87,7 @@ export default function InventoryFilters() {
                                 </select>
                             </div>
 
-                            {/* Assuming specific categories exist, can be dynamic later */}
+                            {}
                             <div>
                                 <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 block">Category</label>
                                 <select

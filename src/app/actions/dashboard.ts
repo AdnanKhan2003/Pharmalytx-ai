@@ -15,7 +15,7 @@ export async function getDashboardMetrics() {
 
     const sales = await prisma.sale.findMany({
         orderBy: { createdAt: 'desc' },
-        take: 100, // For chart
+        take: 100,
         include: {
             items: {
                 include: {
@@ -27,12 +27,8 @@ export async function getDashboardMetrics() {
                 }
             }
         }
-    })
-
-    // Calculate Metrics
-    const totalRevenue = totalRevenueResult._sum.totalAmount || 0
-
-    // Inventory Metrics
+    })
+    const totalRevenue = totalRevenueResult._sum.totalAmount || 0
     let totalStock = 0
     let lowStockCount = 0
     let expiringSoonCount = 0
@@ -47,18 +43,14 @@ export async function getDashboardMetrics() {
             return days <= 30 && days > 0
         })
         if (nearExpiry) expiringSoonCount++
-    })
-
-    // Recent Sales for List
+    })
     const recentSales = sales.slice(0, 5).map((s: any) => ({
         id: s.id,
         amount: s.totalAmount,
         date: s.createdAt,
         itemsCount: s.items.length,
         itemsList: s.items.map((i: any) => `${i.batch.product.name} (x${i.quantity})`).join(', ')
-    }))
-
-    // Chart Data (Group by date)
+    }))
     const chartData = sales.reduce((acc: any[], sale: any) => {
         const date = sale.createdAt.toISOString().split('T')[0]
         const existing = acc.find((x: any) => x.name === date)

@@ -28,8 +28,6 @@ export default function SupplierActions({ supplierId }: { supplierId: string }) 
         }
     }
 
-
-
     return (
         <div className="flex items-center justify-end gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
             <Link

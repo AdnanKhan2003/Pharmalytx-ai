@@ -29,7 +29,7 @@ export default async function DashboardPage() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                {/* Metric Cards */}
+                {}
                 <MetricCard
                     title="Total Revenue"
                     value={`$${metrics.revenue.toFixed(2)}`}
@@ -63,13 +63,13 @@ export default async function DashboardPage() {
                     iconClassName="text-orange-600 bg-orange-100"
                 />
 
-                {/* Charts Section */}
+                {}
                 <div className="col-span-1 md:col-span-2 lg:col-span-4 bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm min-h-[400px]">
                     <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Sales Analytics</h3>
                     <SalesChart data={metrics.chartData} />
                 </div>
 
-                {/* Recent Activity */}
+                {}
                 <div className="col-span-1 md:col-span-2 lg:col-span-4 bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                     <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Recent Sales</h3>
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

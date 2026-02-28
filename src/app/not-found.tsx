@@ -7,14 +7,14 @@ import { Home, ArrowLeft } from "lucide-react";
 export default function NotFound() {
     return (
         <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-slate-50 dark:bg-black transition-colors duration-300">
-            {/* Background Elements */}
+            {}
             <div className="absolute inset-0 z-0">
                 <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/20 rounded-full blur-[100px]" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-teal-400/20 rounded-full blur-[100px]" />
             </div>
 
             <div className="relative z-10 w-full max-w-lg p-8 text-center">
-                {/* Logo */}
+                {}
                 <div className="flex justify-center mb-8">
                     <Image
                         src="/transparent-logo.png"
@@ -25,7 +25,7 @@ export default function NotFound() {
                     />
                 </div>
 
-                {/* 404 Text */}
+                {}
                 <h1 className="text-8xl font-bold bg-linear-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent mb-4">
                     404
                 </h1>
@@ -39,7 +39,7 @@ export default function NotFound() {
                     Let&apos;s get you back on track.
                 </p>
 
-                {/* Action Buttons */}
+                {}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
                         href="/dashboard"
@@ -58,7 +58,7 @@ export default function NotFound() {
                     </button>
                 </div>
 
-                {/* Footer */}
+                {}
                 <div className="mt-12">
                     <p className="text-xs text-gray-400">
                         Pharmalytix AI — Advanced Pharmacy Management

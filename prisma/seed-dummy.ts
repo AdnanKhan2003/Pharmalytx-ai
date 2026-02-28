@@ -4,8 +4,7 @@ import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
-async function main() {
-    // 0. Create Dummy User (for Admin to test User Management)
+async function main() {
     const password = await bcrypt.hash('password123', 10)
     const user = await prisma.user.create({
         data: {
@@ -15,9 +14,7 @@ async function main() {
             role: 'CASHIER'
         }
     })
-    console.log(`Created Dummy User: ${user.name} (${user.email})`)
-
-    // 1. Create Dummy Supplier
+    console.log(`Created Dummy User: ${user.name} (${user.email})`)
     const supplier = await prisma.supplier.create({
         data: {
             name: 'Dummy Supplier',
@@ -26,9 +23,7 @@ async function main() {
             address: '123 Test Lane, Dummy City',
         }
     })
-    console.log(`Created Dummy Supplier: ${supplier.name} (${supplier.id})`)
-
-    // 2. Create Dummy Product linked to Supplier
+    console.log(`Created Dummy Supplier: ${supplier.name} (${supplier.id})`)
     const product = await prisma.product.create({
         data: {
             name: 'Dummy Medicine',
@@ -40,9 +35,7 @@ async function main() {
             supplierId: supplier.id,
         }
     })
-    console.log(`Created Dummy Product: ${product.name} (${product.id})`)
-
-    // 3. Create Dummy Batch for Product
+    console.log(`Created Dummy Product: ${product.name} (${product.id})`)
     const batch = await prisma.batch.create({
         data: {
             productId: product.id,
