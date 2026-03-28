@@ -92,7 +92,7 @@ export default function LoginPage() {
                 <div className="flex flex-col items-center mb-8 login-item">
                     <div className="mb-4 shadow-2xl rounded-full">
                         <Image
-                            src="/transparent-logo.png"
+                            src="/brand-logo.png"
                             alt="Pharmalytix AI Logo"
                             width={80}
                             height={80}

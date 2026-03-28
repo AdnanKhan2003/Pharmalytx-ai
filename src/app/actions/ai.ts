@@ -1,49 +1,60 @@
-'use server'
+"use server";
 
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/lib/prisma";
 
 export async function getDemandForecast() {
-    const products = await prisma.product.findMany({
-        include: { batches: true }
-    })
-    const past30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+  const products = await prisma.product.findMany({
+    include: { batches: true },
+  });
 
-    const sales = await prisma.saleItem.groupBy({
-        by: ['batchId'],
-        _sum: { quantity: true },
-        where: {
-            sale: { createdAt: { gte: past30Days } }
-        }
-    })
-    const batchIds = sales.map((s: { batchId: string }) => s.batchId).filter(Boolean) as string[]
-    const batches = await prisma.batch.findMany({
-        where: { id: { in: batchIds } },
-        select: { id: true, productId: true }
-    })
+  const past30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
-    const productStats: Record<string, { sold: number }> = {}
+  const sales = await prisma.saleItem.groupBy({
+    by: ["batchId"],
+    _sum: { quantity: true },
+    where: {
+      sale: { createdAt: { gte: past30Days } },
+    },
+  });
 
-    sales.forEach((s: { batchId: string, _sum: { quantity: number | null } }) => {
-        const batch = batches.find((b: { id: string }) => b.id === s.batchId)
-        if (batch) {
-            if (!productStats[batch.productId]) productStats[batch.productId] = { sold: 0 }
-            productStats[batch.productId].sold += (s._sum.quantity || 0)
-        }
-    })
-    const forecastPromises = products.map(async (product: any) => {
-        const soldLast30Days = productStats[product.id]?.sold || 0
-        const currentStock = product.batches.reduce((acc: number, b: { quantity: number }) => acc + b.quantity, 0)
-        const dailyRate = soldLast30Days / 30
-        let predictedDemand = Math.ceil(dailyRate * 30)
-        let safetyBuffer = Math.ceil(predictedDemand * 0.2)
-        let explanation = "Based on 30-day simple moving average."
-        if (process.env.GEMINI_API_KEY) {
-            try {
-                const { GoogleGenerativeAI } = require("@google/generative-ai");
-                const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-                const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const batchIds = sales
+    .map((s: { batchId: string }) => s.batchId)
+    .filter(Boolean) as string[];
+  const batches = await prisma.batch.findMany({
+    where: { id: { in: batchIds } },
+    select: { id: true, productId: true },
+  });
 
-                const prompt = `
+  const productStats: Record<string, { sold: number }> = {};
+
+  sales.forEach((s: { batchId: string; _sum: { quantity: number | null } }) => {
+    const batch = batches.find((b: { id: string }) => b.id === s.batchId);
+    if (batch) {
+      if (!productStats[batch.productId])
+        productStats[batch.productId] = { sold: 0 };
+      productStats[batch.productId].sold += s._sum.quantity || 0;
+    }
+  });
+
+  const forecastPromises = products.map(async (product: any) => {
+    const soldLast30Days = productStats[product.id]?.sold || 0;
+    const currentStock = product.batches.reduce(
+      (acc: number, b: { quantity: number }) => acc + b.quantity,
+      0,
+    );
+    const dailyRate = soldLast30Days / 30;
+
+    let predictedDemand = Math.ceil(dailyRate * 30);
+    let safetyBuffer = Math.ceil(predictedDemand * 0.2);
+    let explanation = "Based on 30-day simple moving average.";
+
+    if (process.env.GEMINI_API_KEY) {
+      try {
+        const { GoogleGenerativeAI } = require("@google/generative-ai");
+        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+        const prompt = `
           Context: Pharmacy Inventory Management.
           Product: ${product.name} (Category: ${product.category})
           
@@ -62,37 +73,51 @@ export async function getDemandForecast() {
           }
         `;
 
-                const result = await model.generateContent(prompt);
-                const response = await result.response;
-                const text = response.text().replace(/```json|```/g, "").trim();
-                const aiData = JSON.parse(text);
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response
+          .text()
+          .replace(/```json|```/g, "")
+          .trim();
+        const aiData = JSON.parse(text);
 
-                if (aiData.predictedDemand) {
-                    predictedDemand = aiData.predictedDemand;
-                    safetyBuffer = aiData.safetyBuffer;
-                    explanation = "AI Analysis: " + aiData.reasoning;
-                }
-            } catch (error) {
-                console.error("Gemini API Error for", product.name, error);
-            }
-        }
-        const shouldReorder = currentStock < (predictedDemand + safetyBuffer)
-        const suggestedReorderQuantity = shouldReorder ? (predictedDemand + safetyBuffer - currentStock) : 0
-
-        return {
-            id: product.id,
-            name: product.name,
-            category: product.category,
-            currentStock,
-            soldLast30Days,
-            dailyRate: dailyRate.toFixed(2),
-            predictedDemand,
-            status: shouldReorder ? (currentStock === 0 ? 'CRITICAL' : 'REORDER') : 'HEALTHY',
-            suggestion: suggestedReorderQuantity,
-            explanation
+        if (aiData.predictedDemand) {
+          predictedDemand = aiData.predictedDemand;
+          safetyBuffer = aiData.safetyBuffer;
+          explanation = "AI Analysis: " + aiData.reasoning;
         }
-    })
-    const results = await Promise.all(forecastPromises)
+      } catch (error) {
+        console.error("Gemini API Error for", product.name, error);
+      }
+    }
 
-    return results.sort((a, b) => (b.status === 'CRITICAL' ? 1 : 0) - (a.status === 'CRITICAL' ? 1 : 0))
+    const shouldReorder = currentStock < predictedDemand + safetyBuffer;
+    const suggestedReorderQuantity = shouldReorder
+      ? predictedDemand + safetyBuffer - currentStock
+      : 0;
+
+    return {
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      currentStock,
+      soldLast30Days,
+      dailyRate: dailyRate.toFixed(2),
+      predictedDemand,
+      status: shouldReorder
+        ? currentStock === 0
+          ? "CRITICAL"
+          : "REORDER"
+        : "HEALTHY",
+      suggestion: suggestedReorderQuantity,
+      explanation,
+    };
+  });
+
+  const results = await Promise.all(forecastPromises);
+
+  return results.sort(
+    (a: any, b: any) =>
+      (b.status === "CRITICAL" ? 1 : 0) - (a.status === "CRITICAL" ? 1 : 0),
+  );
 }

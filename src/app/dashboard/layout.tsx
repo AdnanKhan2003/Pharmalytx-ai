@@ -5,9 +5,10 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { LayoutDashboard, Package, ShoppingCart, Users, Settings, LogOut, Pill, Sparkles, BarChart3, ArchiveRestore, Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useSession, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { SessionProvider } from "next-auth/react"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { handleSignOut } from "@/app/actions/auth"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -117,7 +118,7 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
                                         </div>
                                         <div className="p-1">
                                             <button
-                                                onClick={() => signOut()}
+                                                onClick={() => handleSignOut()}
                                                 className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                                             >
                                                 <LogOut className="h-4 w-4" />
@@ -144,7 +145,7 @@ function SidebarContent({ navItems, pathname, onNavigate }: { navItems: any[], p
             <div className="p-6 flex items-center gap-3">
                 <div className="relative h-10 w-10 shrink-0">
                     <Image
-                        src="/transparent-logo.png"
+                        src="/brand-logo.png"
                         alt="Pharmalytix AI Logo"
                         fill
                         className="object-contain"
@@ -181,7 +182,7 @@ function SidebarContent({ navItems, pathname, onNavigate }: { navItems: any[], p
 function UserMenu() {
     return (
         <button
-            onClick={() => signOut()}
+            onClick={() => handleSignOut()}
             className="flex-1 flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
         >
             <LogOut className="h-5 w-5" />

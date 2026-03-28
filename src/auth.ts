@@ -3,11 +3,17 @@ import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
-import { UserRole } from '@prisma/client';
+// import { UserRole } from '@prisma/client';
+type UserRole = 'ADMIN' | 'PHARMACIST' | 'CASHIER';
+
 import { authConfig } from './auth.config';
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
     ...authConfig,
+    basePath: "/api/auth",
+    secret: process.env.AUTH_SECRET,
+    trustHost: true,
+    session: { strategy: 'jwt' },
     callbacks: {
         ...authConfig.callbacks,
         async session({ session, token }) {
@@ -17,13 +23,10 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
             }
             return session;
         },
-        async jwt({ token }) {
-            if (!token.role) {
-                const user = await prisma.user.findUnique({
-                    where: { email: token.email! },
-                    select: { role: true }
-                });
-                token.role = user?.role || 'CASHIER';
+        async jwt({ token, user }) {
+            if (user) {
+                token.role = (user as any).role;
+                token.id = user.id;
             }
             return token;
         }

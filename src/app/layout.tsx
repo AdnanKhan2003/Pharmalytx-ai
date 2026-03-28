@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import JsonLd from "@/components/seo/JsonLd";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -12,14 +13,18 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://pharmalytix-ai.vercel.app"),
-  title: "Pharmalytix AI",
-  description: "Advanced Pharmacy Management System - Secure, Efficient, Intelligent Pharmacy Management with AI-powered forecasting, inventory management, and role-based access control.",
+  title: {
+    default: "Pharmalytix AI | Intelligent Pharmacy Management",
+    template: "%s | Pharmalytix AI"
+  },
+  description: "Secure, Efficient, and Intelligent Pharmacy Management. Powered by AI for demand forecasting, real-time inventory tracking, and secure POS operations.",
+  keywords: ["pharmacy management", "AI forecasting", "inventory management", "pharmacy POS", "demand prediction", "healthcare AI"],
   icons: {
-    icon: "/transparent-logo.png",
+    icon: "/brand-logo.png",
   },
   openGraph: {
-    title: "Pharmalytix AI",
-    description: "Advanced Pharmacy Management System - Secure, Efficient, Intelligent Pharmacy Management",
+    title: "Pharmalytix AI - Smart Pharmacy Management",
+    description: "Advanced Pharmacy Management System with AI-powered forecasting and secure role-based access control.",
     siteName: "Pharmalytix AI",
     url: "https://pharmalytix-ai.vercel.app",
     images: [
@@ -27,15 +32,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Pharmalytix AI - User Roles & Feature Access",
+        alt: "Pharmalytix AI Dashboard",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pharmalytix AI",
-    description: "Advanced Pharmacy Management System - Secure, Efficient, Intelligent Pharmacy Management",
+    title: "Pharmalytix AI - Smart Pharmacy",
+    description: "Automate your pharmacy with AI-driven inventory and secure POS management.",
     images: ["/og-image.png"],
   },
 };
@@ -50,6 +55,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} font-sans antialiased`}
       >
+        <JsonLd />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

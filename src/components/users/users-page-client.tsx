@@ -5,7 +5,9 @@ import { useFormStatus } from "react-dom"
 import { createUser, deleteUser } from "@/app/actions/users"
 import { toast } from "sonner"
 import { Plus, Trash2, User as UserIcon, Shield, ShieldAlert, Store } from "lucide-react"
-import { UserRole } from "@prisma/client"
+// import { UserRole } from "@prisma/client"
+type UserRole = "ADMIN" | "PHARMACIST" | "CASHIER"
+
 import DeleteConfirmationModal from "@/components/ui/delete-modal"
 import { ExportButton } from "@/components/ui/export-button"
 
